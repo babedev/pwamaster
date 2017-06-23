@@ -4,9 +4,7 @@ if (typeof kotlin === 'undefined') {
 var pwamaster_main = function (_, Kotlin) {
   'use strict';
   var addClass = Kotlin.kotlin.dom.addClass_hhb33f$;
-  var Enum = Kotlin.kotlin.Enum;
-  Tab.prototype = Object.create(Enum.prototype);
-  Tab.prototype.constructor = Tab;
+  var appendText = Kotlin.kotlin.dom.appendText_46n0ku$;
   function app(id, child) {
     if (id === void 0)
       id = 'app';
@@ -172,6 +170,17 @@ var pwamaster_main = function (_, Kotlin) {
     child(new Child(li));
     return li;
   };
+  function Child$button$lambda(closure$onclick) {
+    return function (it) {
+      closure$onclick();
+    };
+  }
+  Child.prototype.button_a4mwiz$ = function (text_0, onclick) {
+    var button = appendText(this.element_0('button'), text_0);
+    button.className = 'button is-info';
+    button.addEventListener('click', Child$button$lambda(onclick));
+    this.parent.appendChild(button);
+  };
   Child.prototype.element_0 = function (name) {
     return document.createElement(name);
   };
@@ -180,126 +189,67 @@ var pwamaster_main = function (_, Kotlin) {
     simpleName: 'Child',
     interfaces: []
   };
-  function Tab(name, ordinal) {
-    Enum.call(this);
-    this.name$ = name;
-    this.ordinal$ = ordinal;
-  }
-  function Tab_initFields() {
-    Tab_initFields = function () {
-    };
-    Tab$TWTTR_instance = new Tab('TWTTR', 0);
-    Tab$FB_instance = new Tab('FB', 1);
-    Tab$IG_instance = new Tab('IG', 2);
-  }
-  var Tab$TWTTR_instance;
-  function Tab$TWTTR_getInstance() {
-    Tab_initFields();
-    return Tab$TWTTR_instance;
-  }
-  var Tab$FB_instance;
-  function Tab$FB_getInstance() {
-    Tab_initFields();
-    return Tab$FB_instance;
-  }
-  var Tab$IG_instance;
-  function Tab$IG_getInstance() {
-    Tab_initFields();
-    return Tab$IG_instance;
-  }
-  Tab.$metadata$ = {
-    kind: Kotlin.Kind.CLASS,
-    simpleName: 'Tab',
-    interfaces: [Enum]
-  };
-  function Tab$values() {
-    return [Tab$TWTTR_getInstance(), Tab$FB_getInstance(), Tab$IG_getInstance()];
-  }
-  Tab.values = Tab$values;
-  function Tab$valueOf(name) {
-    switch (name) {
-      case 'TWTTR':
-        return Tab$TWTTR_getInstance();
-      case 'FB':
-        return Tab$FB_getInstance();
-      case 'IG':
-        return Tab$IG_getInstance();
-      default:Kotlin.throwISE('No enum constant com.github.babedev.Tab.' + name);
-    }
-  }
-  Tab.valueOf_61zpoe$ = Tab$valueOf;
-  var twitterTab;
-  var facebookTab;
-  var igTab;
-  var content;
-  function main$lambda$lambda$lambda$lambda$lambda() {
-    changeTab(Tab$TWTTR_getInstance());
-  }
-  function main$lambda$lambda$lambda$lambda$lambda_0($receiver) {
-    $receiver.text_61zpoe$('Twitter');
-  }
-  function main$lambda$lambda$lambda$lambda($receiver) {
-    $receiver.a_juj0ph$(void 0, void 0, main$lambda$lambda$lambda$lambda$lambda, main$lambda$lambda$lambda$lambda$lambda_0);
-  }
-  function main$lambda$lambda$lambda$lambda$lambda_1() {
-    changeTab(Tab$FB_getInstance());
-  }
-  function main$lambda$lambda$lambda$lambda$lambda_2($receiver) {
-    $receiver.text_61zpoe$('Facebook');
-  }
-  function main$lambda$lambda$lambda$lambda_0($receiver) {
-    $receiver.a_juj0ph$(void 0, void 0, main$lambda$lambda$lambda$lambda$lambda_1, main$lambda$lambda$lambda$lambda$lambda_2);
-  }
-  function main$lambda$lambda$lambda$lambda$lambda_3() {
-    changeTab(Tab$IG_getInstance());
-  }
-  function main$lambda$lambda$lambda$lambda$lambda_4($receiver) {
-    $receiver.text_61zpoe$('Instagram');
-  }
-  function main$lambda$lambda$lambda$lambda_1($receiver) {
-    $receiver.a_juj0ph$(void 0, void 0, main$lambda$lambda$lambda$lambda$lambda_3, main$lambda$lambda$lambda$lambda$lambda_4);
-  }
-  function main$lambda$lambda$lambda($receiver) {
-    twitterTab = $receiver.li_xddp9w$(main$lambda$lambda$lambda$lambda);
-    facebookTab = $receiver.li_xddp9w$(main$lambda$lambda$lambda$lambda_0);
-    igTab = $receiver.li_xddp9w$(main$lambda$lambda$lambda$lambda_1);
-  }
-  function main$lambda$lambda($receiver) {
-    $receiver.ul_xddp9w$(main$lambda$lambda$lambda);
-  }
-  function main$lambda$lambda_0($receiver) {
-  }
-  function main$lambda($receiver) {
-    $receiver.div_7h4oe2$(void 0, 'tabs is-centered is-medium', void 0, main$lambda$lambda);
-    content = $receiver.div_7h4oe2$(void 0, void 0, void 0, main$lambda$lambda_0);
+  var deviceId;
+  var database;
+  function main$lambda(result, f) {
+    deviceId = result;
+    render();
   }
   function main(args) {
-    app(void 0, main$lambda);
+    (new Fingerprint2()).get(main$lambda);
   }
-  function changeTab(tab) {
-    twitterTab.className = '';
-    facebookTab.className = '';
-    igTab.className = '';
-    if (Kotlin.equals(tab, Tab$TWTTR_getInstance())) {
-      twitterTab.className = 'is-active';
-      renderTwitter();
-    }
-     else if (Kotlin.equals(tab, Tab$FB_getInstance())) {
-      facebookTab.className = 'is-active';
-      renderFB();
-    }
-     else if (Kotlin.equals(tab, Tab$IG_getInstance())) {
-      igTab.className = 'is-active';
-      renderIG();
-    }
+  function render$lambda$lambda() {
+    var message = new Message(deviceId, 'test');
+    database.ref('/messages/' + message.date).set(message);
   }
-  function renderTwitter() {
-    content;
+  function render$lambda($receiver) {
+    $receiver.text_61zpoe$(deviceId);
+    $receiver.button_a4mwiz$('Send', render$lambda$lambda);
   }
-  function renderFB() {
+  function render() {
+    app(void 0, render$lambda);
   }
-  function renderIG() {
+  function Message(device, detail, date) {
+    if (device === void 0)
+      device = '';
+    if (detail === void 0)
+      detail = '';
+    if (date === void 0)
+      date = (new Date()).getTime();
+    this.device = device;
+    this.detail = detail;
+    this.date = date;
   }
+  Message.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'Message',
+    interfaces: []
+  };
+  Message.prototype.component1 = function () {
+    return this.device;
+  };
+  Message.prototype.component2 = function () {
+    return this.detail;
+  };
+  Message.prototype.component3 = function () {
+    return this.date;
+  };
+  Message.prototype.copy_do2bxa$ = function (device, detail, date) {
+    return new Message(device === void 0 ? this.device : device, detail === void 0 ? this.detail : detail, date === void 0 ? this.date : date);
+  };
+  Message.prototype.toString = function () {
+    return 'Message(device=' + Kotlin.toString(this.device) + (', detail=' + Kotlin.toString(this.detail)) + (', date=' + Kotlin.toString(this.date)) + ')';
+  };
+  Message.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.device) | 0;
+    result = result * 31 + Kotlin.hashCode(this.detail) | 0;
+    result = result * 31 + Kotlin.hashCode(this.date) | 0;
+    return result;
+  };
+  Message.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.device, other.device) && Kotlin.equals(this.detail, other.detail) && Kotlin.equals(this.date, other.date)))));
+  };
   var package$com = _.com || (_.com = {});
   var package$github = package$com.github || (package$com.github = {});
   var package$babedev = package$github.babedev || (package$github.babedev = {});
@@ -308,57 +258,25 @@ var pwamaster_main = function (_, Kotlin) {
   package$babedev.width_46n0ku$ = width;
   package$babedev.height_46n0ku$ = height;
   package$babedev.Child = Child;
-  Object.defineProperty(Tab, 'TWTTR', {
-    get: Tab$TWTTR_getInstance
-  });
-  Object.defineProperty(Tab, 'FB', {
-    get: Tab$FB_getInstance
-  });
-  Object.defineProperty(Tab, 'IG', {
-    get: Tab$IG_getInstance
-  });
-  package$babedev.Tab = Tab;
-  Object.defineProperty(package$babedev, 'twitterTab', {
+  Object.defineProperty(package$babedev, 'deviceId', {
     get: function () {
-      return twitterTab;
+      return deviceId;
     },
     set: function (value) {
-      twitterTab = value;
+      deviceId = value;
     }
   });
-  Object.defineProperty(package$babedev, 'facebookTab', {
+  Object.defineProperty(package$babedev, 'database', {
     get: function () {
-      return facebookTab;
-    },
-    set: function (value) {
-      facebookTab = value;
-    }
-  });
-  Object.defineProperty(package$babedev, 'igTab', {
-    get: function () {
-      return igTab;
-    },
-    set: function (value) {
-      igTab = value;
-    }
-  });
-  Object.defineProperty(package$babedev, 'content', {
-    get: function () {
-      return content;
-    },
-    set: function (value) {
-      content = value;
+      return database;
     }
   });
   package$babedev.main_kand9s$ = main;
-  package$babedev.changeTab_x1uack$ = changeTab;
-  package$babedev.renderTwitter = renderTwitter;
-  package$babedev.renderFB = renderFB;
-  package$babedev.renderIG = renderIG;
-  twitterTab = document.createElement('div');
-  facebookTab = document.createElement('div');
-  igTab = document.createElement('div');
-  content = document.createElement('div');
+  package$babedev.render = render;
+  var package$model = package$babedev.model || (package$babedev.model = {});
+  package$model.Message = Message;
+  deviceId = '';
+  database = firebase.database();
   Kotlin.defineModule('pwamaster_main', _);
   main([]);
   return _;

@@ -4,6 +4,8 @@ import jquery.jq
 import org.w3c.dom.Element
 import kotlin.browser.document
 import kotlin.dom.addClass
+import kotlin.dom.appendElement
+import kotlin.dom.appendText
 
 fun app(id: String = "app", child: Child.() -> Unit): Element {
     val app = document.getElementById(id)!!
@@ -125,6 +127,17 @@ class Child(val parent: Element) {
         parent.appendChild(li)
         Child(li).apply(child)
         return li
+    }
+
+    fun button(text: String, onclick: () -> Unit) {
+        val button = element("button").appendText(text)
+        button.className = "button is-info"
+
+        button.addEventListener("click", {
+            onclick()
+        })
+
+        parent.appendChild(button)
     }
 
     private fun element(name: String): Element {
