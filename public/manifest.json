@@ -1,0 +1,7 @@
+{
+  "short_name": "PWA Master",
+  "name": "PWA Chat",
+  "icons": [
+  ],
+  "start_url": "index.html?launcher=true"
+}

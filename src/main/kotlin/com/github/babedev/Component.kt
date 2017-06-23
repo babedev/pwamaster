@@ -1,16 +1,25 @@
 package com.github.babedev
 
-import jquery.jq
 import org.w3c.dom.Element
 import kotlin.browser.document
 import kotlin.dom.addClass
-import kotlin.dom.appendElement
 import kotlin.dom.appendText
 
 fun app(id: String = "app", child: Child.() -> Unit): Element {
     val app = document.getElementById(id)!!
     Child(app).apply(child)
     return app
+}
+
+fun div(id: String, child: Child.() -> Unit): Element {
+    val app = document.getElementById(id)!!
+    Child(app).apply(child)
+    return app
+}
+
+fun empty(id: String) {
+    val div = document.getElementById(id)!!
+    div.innerHTML = ""
 }
 
 fun Element.src(value: String = "") {
@@ -46,18 +55,6 @@ class Child(val parent: Element) {
         Child(strong).apply(child)
     }
 
-    fun canvas(id: String = "", className: String = "", width: Int = 300, height: Int = 300) {
-        val canvas = element("canvas").apply {
-            this.id = id
-            setAttribute("width", "${width}px")
-            setAttribute("height", "${height}px")
-        }
-
-        if (className.isNotBlank()) canvas.addClass(className)
-
-        parent.appendChild(canvas)
-    }
-
     fun a(id: String = "", className: String = "", onclick: () -> Unit, child: Child.() -> Unit) {
         val a = element("a")
 
@@ -70,24 +67,6 @@ class Child(val parent: Element) {
 
         parent.appendChild(a)
         Child(a).apply(child)
-    }
-
-    fun inputFile(id: String = "", className: String = "", onchange: () -> Unit): Element {
-        val input = element("input").apply {
-            setAttribute("type", "file")
-            setAttribute("accept", "image/*")
-        }
-
-        if (id.isNotBlank()) input.id = id
-        if (className.isNotBlank()) input.addClass(className)
-
-        jq(input).change {
-            onchange()
-        }
-
-        parent.appendChild(input)
-
-        return input
     }
 
     fun img(id: String = "", width: Int = 300, height: Int = 300, block: Element.() -> Unit = {}) {

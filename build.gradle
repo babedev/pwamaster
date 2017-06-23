@@ -30,17 +30,29 @@ build.doLast {
             includeEmptyDirs = false
 
             from zipTree(file.absolutePath)
-            into "${projectDir}/web"
+            into "${projectDir}/public"
             include { fileTreeElement ->
                 def path = fileTreeElement.path
                 path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
             }
         }
+
+        copy {
+            includeEmptyDirs = false
+            from new File("index.html")
+            into "public"
+        }
+
+        copy {
+            includeEmptyDirs = false
+            from new File("manifest.json")
+            into "public"
+        }
     }
 }
 
 compileKotlin2Js {
-    kotlinOptions.outputFile = "${projectDir}/web/output.js"
+    kotlinOptions.outputFile = "${projectDir}/public/output.js"
     kotlinOptions.moduleKind = "plain"
     kotlinOptions.sourceMap = true
 }

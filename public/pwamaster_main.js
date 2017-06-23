@@ -8,10 +8,21 @@ var pwamaster_main = function (_, Kotlin) {
   function app(id, child) {
     if (id === void 0)
       id = 'app';
-    var tmp$;
-    var app_0 = (tmp$ = document.getElementById(id)) != null ? tmp$ : Kotlin.throwNPE();
+    var tmp$_0;
+    var app_0 = (tmp$_0 = document.getElementById(id)) != null ? tmp$_0 : Kotlin.throwNPE();
     child(new Child(app_0));
     return app_0;
+  }
+  function div(id, child) {
+    var tmp$_0;
+    var app_0 = (tmp$_0 = document.getElementById(id)) != null ? tmp$_0 : Kotlin.throwNPE();
+    child(new Child(app_0));
+    return app_0;
+  }
+  function empty(id) {
+    var tmp$_0;
+    var div_0 = (tmp$_0 = document.getElementById(id)) != null ? tmp$_0 : Kotlin.throwNPE();
+    div_0.innerHTML = '';
   }
   function src($receiver, value) {
     if (value === void 0)
@@ -38,45 +49,23 @@ var pwamaster_main = function (_, Kotlin) {
       className = '';
     if (width_0 === void 0)
       width_0 = 0;
-    var div = this.element_0('div');
+    var div_0 = this.element_0('div');
     var $receiver = className;
     if (!Kotlin.kotlin.text.isBlank_gw00vp$($receiver))
-      addClass(div, [className]);
+      addClass(div_0, [className]);
     var $receiver_0 = id;
     if (!Kotlin.kotlin.text.isBlank_gw00vp$($receiver_0))
-      div.id = id;
+      div_0.id = id;
     if (width_0 !== 0)
-      div.setAttribute('width', width_0.toString() + 'px');
-    this.parent.appendChild(div);
-    child(new Child(div));
-    return div;
+      div_0.setAttribute('width', width_0.toString() + 'px');
+    this.parent.appendChild(div_0);
+    child(new Child(div_0));
+    return div_0;
   };
   Child.prototype.strong_xddp9w$ = function (child) {
     var strong = this.element_0('strong');
     this.parent.appendChild(strong);
     child(new Child(strong));
-  };
-  Child.prototype.canvas_ccskfk$ = function (id, className, width_0, height_0) {
-    if (id === void 0)
-      id = '';
-    if (className === void 0)
-      className = '';
-    if (width_0 === void 0)
-      width_0 = 300;
-    if (height_0 === void 0)
-      height_0 = 300;
-    var $receiver = this.element_0('canvas');
-    var closure$id = id;
-    var closure$width = width_0;
-    var closure$height = height_0;
-    $receiver.id = closure$id;
-    $receiver.setAttribute('width', closure$width.toString() + 'px');
-    $receiver.setAttribute('height', closure$height.toString() + 'px');
-    var canvas = $receiver;
-    var $receiver_0 = className;
-    if (!Kotlin.kotlin.text.isBlank_gw00vp$($receiver_0))
-      addClass(canvas, [className]);
-    this.parent.appendChild(canvas);
   };
   function Child$a$lambda(closure$onclick) {
     return function (it) {
@@ -98,30 +87,6 @@ var pwamaster_main = function (_, Kotlin) {
     a.addEventListener('click', Child$a$lambda(onclick));
     this.parent.appendChild(a);
     child(new Child(a));
-  };
-  function Child$inputFile$lambda(closure$onchange) {
-    return function () {
-      closure$onchange();
-    };
-  }
-  Child.prototype.inputFile_hgzy0z$ = function (id, className, onchange) {
-    if (id === void 0)
-      id = '';
-    if (className === void 0)
-      className = '';
-    var $receiver = this.element_0('input');
-    $receiver.setAttribute('type', 'file');
-    $receiver.setAttribute('accept', 'image/*');
-    var input = $receiver;
-    var $receiver_0 = id;
-    if (!Kotlin.kotlin.text.isBlank_gw00vp$($receiver_0))
-      input.id = id;
-    var $receiver_1 = className;
-    if (!Kotlin.kotlin.text.isBlank_gw00vp$($receiver_1))
-      addClass(input, [className]);
-    $(input).change(Child$inputFile$lambda(onchange));
-    this.parent.appendChild(input);
-    return input;
   };
   function Child$img$lambda($receiver) {
   }
@@ -191,23 +156,56 @@ var pwamaster_main = function (_, Kotlin) {
   };
   var deviceId;
   var database;
+  var messages;
   function main$lambda(result, f) {
     deviceId = result;
     render();
   }
   function main(args) {
     (new Fingerprint2()).get(main$lambda);
+    listen();
   }
-  function render$lambda$lambda() {
-    var message = new Message(deviceId, 'test');
-    database.ref('/messages/' + message.date).set(message);
+  function render$lambda$lambda($receiver) {
+  }
+  function render$lambda$lambda_0() {
+    var $receiver = new Message(deviceId, 'test');
+    database.ref('/messages/' + $receiver.date).set($receiver);
   }
   function render$lambda($receiver) {
     $receiver.text_61zpoe$(deviceId);
-    $receiver.button_a4mwiz$('Send', render$lambda$lambda);
+    $receiver.div_7h4oe2$('messages', void 0, void 0, render$lambda$lambda);
+    $receiver.button_a4mwiz$('Send', render$lambda$lambda_0);
   }
   function render() {
     app(void 0, render$lambda);
+  }
+  function listen$lambda$lambda(child) {
+    messages.add_11rb$(child.val());
+  }
+  function listen$lambda(snapshot) {
+    messages.clear();
+    snapshot.forEach(listen$lambda$lambda);
+    renderMessages();
+  }
+  function listen() {
+    database.ref('/messages').on('value', listen$lambda);
+  }
+  function renderMessages$lambda$lambda$lambda(closure$m) {
+    return function ($receiver) {
+      $receiver.text_61zpoe$(closure$m.detail);
+    };
+  }
+  function renderMessages$lambda($receiver) {
+    var tmp$_0;
+    tmp$_0 = messages.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
+      $receiver.div_7h4oe2$(void 0, void 0, 10, renderMessages$lambda$lambda$lambda(element));
+    }
+  }
+  function renderMessages() {
+    empty('messages');
+    div('messages', renderMessages$lambda);
   }
   function Message(device, detail, date) {
     if (device === void 0)
@@ -254,6 +252,8 @@ var pwamaster_main = function (_, Kotlin) {
   var package$github = package$com.github || (package$com.github = {});
   var package$babedev = package$github.babedev || (package$github.babedev = {});
   package$babedev.app_cjyqka$ = app;
+  package$babedev.div_cjyqka$ = div;
+  package$babedev.empty_61zpoe$ = empty;
   package$babedev.src_46n0ku$ = src;
   package$babedev.width_46n0ku$ = width;
   package$babedev.height_46n0ku$ = height;
@@ -271,12 +271,21 @@ var pwamaster_main = function (_, Kotlin) {
       return database;
     }
   });
+  Object.defineProperty(package$babedev, 'messages', {
+    get: function () {
+      return messages;
+    }
+  });
   package$babedev.main_kand9s$ = main;
   package$babedev.render = render;
+  package$babedev.listen = listen;
+  package$babedev.renderMessages = renderMessages;
   var package$model = package$babedev.model || (package$babedev.model = {});
   package$model.Message = Message;
   deviceId = '';
-  database = firebase.database();
+  var tmp$;
+  database = (tmp$ = firebase.database()) != null ? tmp$ : Kotlin.throwNPE();
+  messages = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
   Kotlin.defineModule('pwamaster_main', _);
   main([]);
   return _;
