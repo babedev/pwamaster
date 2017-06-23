@@ -108,6 +108,18 @@ class Child(val parent: Element) {
         return li
     }
 
+    fun editText(id: String = ""): Element {
+        val editText = element("input")
+
+        if (id.isNotBlank()) editText.id = id
+
+        editText.addClass("input")
+        editText.setAttribute("type", "text")
+        parent.appendChild(editText)
+
+        return editText
+    }
+
     fun button(text: String, onclick: () -> Unit) {
         val button = element("button").appendText(text)
         button.className = "button is-info"

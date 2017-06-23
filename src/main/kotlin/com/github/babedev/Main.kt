@@ -3,6 +3,8 @@
 package com.github.babedev
 
 import com.github.babedev.model.Message
+import jquery.jq
+import kotlin.browser.document
 
 var deviceId = ""
 val database = js("firebase.database()")!!
@@ -20,16 +22,22 @@ fun main(args: Array<String>) {
 
 fun render() {
     app {
-        text(deviceId)
+        div("messages", className = "flex: 1 0 auto") {
 
-        div("messages") {}
+        }
 
-        button("Send", {
-            Message(deviceId, "test").apply {
-                database.ref("/messages/$date").set(this)
-            }
-        })
-    }
+        div(className = "row") {
+            editText("messageInput").setAttribute("style", "flex: 1")
+
+            button("Send", {
+                val messageInput = jq("#messageInput").`val`()!!
+
+                Message(deviceId, messageInput).apply {
+                    database.ref("/messages/$date").set(this)
+                }
+            })
+        }.setAttribute("style", "padding: 10px; background: #FFF")
+    }.setAttribute("style", "padding: 10px; background: #64B5F6")
 }
 
 fun listen() {
@@ -50,8 +58,18 @@ fun renderMessages() {
 
     div(id = "messages") {
         messages.forEach { m ->
-            div(width = 10) {
-                text(m.detail)
+            if (m.device == deviceId) {
+                div(className = "level-right") {
+                    div(className = "msg") {
+                        text(m.detail)
+                    }.setAttribute("style", "display: inline-block; margin-right: 10px; margin-bottom: 10px")
+                }.setAttribute("align", "right")
+            } else {
+                div(className = "level-left") {
+                    div(className = "msg") {
+                        text(m.detail)
+                    }.setAttribute("style", "display: inline-block; margin-right: 10px; margin-bottom: 10px")
+                }
             }
         }
     }

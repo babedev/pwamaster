@@ -48,6 +48,18 @@ build.doLast {
             from new File("manifest.json")
             into "public"
         }
+
+        copy {
+            includeEmptyDirs = false
+            from new File("Icon-196.png")
+            into "public"
+        }
+
+        copy {
+            includeEmptyDirs = false
+            from new File("Icon-512.png")
+            into "public"
+        }
     }
 }
 

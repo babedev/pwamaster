@@ -135,6 +135,18 @@ var output = function (_, Kotlin) {
     child(new Child(li));
     return li;
   };
+  Child.prototype.editText_61zpoe$ = function (id) {
+    if (id === void 0)
+      id = '';
+    var editText = this.element_0('input');
+    var $receiver = id;
+    if (!Kotlin.kotlin.text.isBlank_gw00vp$($receiver))
+      editText.id = id;
+    addClass(editText, ['input']);
+    editText.setAttribute('type', 'text');
+    this.parent.appendChild(editText);
+    return editText;
+  };
   function Child$button$lambda(closure$onclick) {
     return function (it) {
       closure$onclick();
@@ -167,17 +179,22 @@ var output = function (_, Kotlin) {
   }
   function render$lambda$lambda($receiver) {
   }
-  function render$lambda$lambda_0() {
-    var $receiver = new Message(deviceId, 'test');
+  function render$lambda$lambda$lambda() {
+    var tmp$_0;
+    var messageInput = (tmp$_0 = $('#messageInput').val()) != null ? tmp$_0 : Kotlin.throwNPE();
+    var $receiver = new Message(deviceId, messageInput);
     database.ref('/messages/' + $receiver.date).set($receiver);
   }
+  function render$lambda$lambda_0($receiver) {
+    $receiver.editText_61zpoe$('messageInput').setAttribute('style', 'flex: 1');
+    $receiver.button_a4mwiz$('Send', render$lambda$lambda$lambda);
+  }
   function render$lambda($receiver) {
-    $receiver.text_61zpoe$(deviceId);
-    $receiver.div_7h4oe2$('messages', void 0, void 0, render$lambda$lambda);
-    $receiver.button_a4mwiz$('Send', render$lambda$lambda_0);
+    $receiver.div_7h4oe2$('messages', 'flex: 1 0 auto', void 0, render$lambda$lambda);
+    $receiver.div_7h4oe2$(void 0, 'row', void 0, render$lambda$lambda_0).setAttribute('style', 'padding: 10px; background: #FFF');
   }
   function render() {
-    app(void 0, render$lambda);
+    app(void 0, render$lambda).setAttribute('style', 'padding: 10px; background: #64B5F6');
   }
   function listen$lambda$lambda(child) {
     messages.add_11rb$(child.val());
@@ -190,9 +207,24 @@ var output = function (_, Kotlin) {
   function listen() {
     database.ref('/messages').on('value', listen$lambda);
   }
-  function renderMessages$lambda$lambda$lambda(closure$m) {
+  function renderMessages$lambda$lambda$lambda$lambda(closure$m) {
     return function ($receiver) {
       $receiver.text_61zpoe$(closure$m.detail);
+    };
+  }
+  function renderMessages$lambda$lambda$lambda(closure$m) {
+    return function ($receiver) {
+      $receiver.div_7h4oe2$(void 0, 'msg', void 0, renderMessages$lambda$lambda$lambda$lambda(closure$m)).setAttribute('style', 'display: inline-block; margin-right: 10px; margin-bottom: 10px');
+    };
+  }
+  function renderMessages$lambda$lambda$lambda$lambda_0(closure$m) {
+    return function ($receiver) {
+      $receiver.text_61zpoe$(closure$m.detail);
+    };
+  }
+  function renderMessages$lambda$lambda$lambda_0(closure$m) {
+    return function ($receiver) {
+      $receiver.div_7h4oe2$(void 0, 'msg', void 0, renderMessages$lambda$lambda$lambda$lambda_0(closure$m)).setAttribute('style', 'display: inline-block; margin-right: 10px; margin-bottom: 10px');
     };
   }
   function renderMessages$lambda($receiver) {
@@ -200,7 +232,12 @@ var output = function (_, Kotlin) {
     tmp$_0 = messages.iterator();
     while (tmp$_0.hasNext()) {
       var element = tmp$_0.next();
-      $receiver.div_7h4oe2$(void 0, void 0, 10, renderMessages$lambda$lambda$lambda(element));
+      if (Kotlin.equals(element.device, deviceId)) {
+        $receiver.div_7h4oe2$(void 0, 'level-right', void 0, renderMessages$lambda$lambda$lambda(element)).setAttribute('align', 'right');
+      }
+       else {
+        $receiver.div_7h4oe2$(void 0, 'level-left', void 0, renderMessages$lambda$lambda$lambda_0(element));
+      }
     }
   }
   function renderMessages() {
