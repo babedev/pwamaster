@@ -4,7 +4,6 @@ package com.github.babedev
 
 import com.github.babedev.model.Message
 import jquery.jq
-import kotlin.browser.document
 
 var deviceId = ""
 val database = js("firebase.database()")!!

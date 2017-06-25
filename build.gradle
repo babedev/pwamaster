@@ -45,6 +45,12 @@ build.doLast {
 
         copy {
             includeEmptyDirs = false
+            from new File("service-worker.js")
+            into "public"
+        }
+
+        copy {
+            includeEmptyDirs = false
             from new File("manifest.json")
             into "public"
         }
